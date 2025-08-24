@@ -1,11 +1,16 @@
 pipeline {
-  agent any
+  agent {
+    docker { image 'python:3.11-slim' } // gives you python & pip
+  }
   stages {
-    stage('Checkout') { steps { checkout scm } }
+    stage('Checkout') {
+      steps { checkout scm }
+    }
     stage('Setup venv') {
       steps {
         sh '''
-          python3 -m venv .venv
+          python --version
+          python -m venv .venv
           . .venv/bin/activate
           pip install --upgrade pip
           test -f requirements.txt && pip install -r requirements.txt || true
@@ -19,11 +24,3 @@ pipeline {
     }
   }
 }
-pipeline {
-  agent any
-  stages {
-    stage('Checkout')   { steps { checkout scm } }
-    stage('Say hello')  { steps { echo 'Hello from GitHub Pipeline!' } }
-  }
-}
-EOF
