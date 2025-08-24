@@ -19,3 +19,11 @@ pipeline {
     }
   }
 }
+pipeline {
+  agent any
+  stages {
+    stage('Checkout')   { steps { checkout scm } }
+    stage('Say hello')  { steps { echo 'Hello from GitHub Pipeline!' } }
+  }
+}
+EOF
